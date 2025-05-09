@@ -1,4 +1,4 @@
-from models import ToolResult
+from models import ToolResult, UserQuery
 import json
 from rich.console import Console
 from rich.panel import Panel
@@ -12,10 +12,18 @@ class PerceptionLayer:
         """Initialize the perception layer"""
         pass
         
-    def process_user_query(self, query: str) -> str:
-        """Process the initial user query"""
-        # Simple processing, could be expanded to extract key information
-        return query.strip()
+    def process_user_query(self, query: UserQuery) -> str:
+        """Process the user query with style preferences"""
+        # Format the query in a way that helps the LLM understand the requirements
+        processed_query = f"""Create an image with the following specifications:
+        
+Style preference: {query.style_preference}
+
+Description: {query.description}
+
+Please follow this style preference while creating the image described above."""
+
+        return processed_query.strip()
     
     def process_tool_result(self, result: Any, tool_name: str) -> ToolResult:
         """Process the result from a tool execution"""

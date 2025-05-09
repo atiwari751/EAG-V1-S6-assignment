@@ -2,15 +2,20 @@ from pydantic import BaseModel, Field
 from typing import Dict, List, Optional, Union, Any
 
 class ToolInput(BaseModel):
-    """Input parameters for tool execution"""
+    """Input for a tool call"""
     name: str
     args: Dict[str, Any] = {}
 
 class ToolResult(BaseModel):
-    """Result from tool execution"""
+    """Result from a tool execution"""
     success: bool
     content: str
     error: Optional[str] = None
+
+class UserQuery(BaseModel):
+    """Structure for user input query"""
+    description: str = Field(..., description="The main description of what to create")
+    style_preference: str = Field(..., description="User's style preference (simple, experimental, abstract, regular, etc.)")
 
 class MemoryItem(BaseModel):
     """An item in agent memory"""
