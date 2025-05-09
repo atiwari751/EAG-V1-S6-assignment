@@ -29,7 +29,7 @@ paint_app = None
 # DEFINE TOOLS
 
 @mcp.tool()
-async def draw_rectangle(x1: int, y1: int, x2: int, y2: int) -> dict:
+async def draw_2D_rectangle(x1: int, y1: int, x2: int, y2: int) -> dict:
     """Draw a rectangle in Paint from (x1,y1) to (x2,y2)"""
     global paint_app
     try:
@@ -222,7 +222,7 @@ def show_reasoning(steps) -> TextContent:
     )
 
 @mcp.tool()
-async def draw_oval(x1: int, y1: int, x2: int, y2: int) -> dict:
+async def draw_2D_oval(x1: int, y1: int, x2: int, y2: int) -> dict:
     """Draw an oval in Paint from (x1,y1) to (x2,y2)"""
     global paint_app
     try:
@@ -246,7 +246,7 @@ async def draw_oval(x1: int, y1: int, x2: int, y2: int) -> dict:
         return {"content":[TextContent(type="text",text=f"Error drawing oval: {e}")]}
 
 @mcp.tool()
-async def draw_right_arrow(x1: int, y1: int, x2: int, y2: int) -> dict:
+async def draw_2D_right_arrow_shape(x1: int, y1: int, x2: int, y2: int) -> dict:
     """Draw a right arrow in Paint from (x1,y1) to (x2,y2)"""
     global paint_app
     try:
@@ -269,7 +269,7 @@ async def draw_right_arrow(x1: int, y1: int, x2: int, y2: int) -> dict:
         return {"content":[TextContent(type="text",text=f"Error drawing right arrow: {e}")]}
 
 @mcp.tool()
-async def draw_left_arrow(x1: int, y1: int, x2: int, y2: int) -> dict:
+async def draw_2D_left_arrow_shape(x1: int, y1: int, x2: int, y2: int) -> dict:
     """Draw a left arrow in Paint from (x1,y1) to (x2,y2)"""
     global paint_app
     try:
@@ -292,7 +292,7 @@ async def draw_left_arrow(x1: int, y1: int, x2: int, y2: int) -> dict:
         return {"content":[TextContent(type="text",text=f"Error drawing left arrow: {e}")]}
 
 @mcp.tool()
-async def draw_up_arrow(x1: int, y1: int, x2: int, y2: int) -> dict:
+async def draw_2D_up_arrow_shape(x1: int, y1: int, x2: int, y2: int) -> dict:
     """Draw an up arrow in Paint from (x1,y1) to (x2,y2)"""
     global paint_app
     try:
@@ -315,7 +315,7 @@ async def draw_up_arrow(x1: int, y1: int, x2: int, y2: int) -> dict:
         return {"content":[TextContent(type="text",text=f"Error drawing up arrow: {e}")]}
 
 @mcp.tool()
-async def draw_down_arrow(x1: int, y1: int, x2: int, y2: int) -> dict:
+async def draw_2D_down_arrow_shape(x1: int, y1: int, x2: int, y2: int) -> dict:
     """Draw a down arrow in Paint from (x1,y1) to (x2,y2)"""
     global paint_app
     try:

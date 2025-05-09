@@ -121,7 +121,7 @@ class ActionLayer:
                 result = loop.run_until_complete(
                     asyncio.wait_for(
                         self._execute_tool_async(tool_call), 
-                        timeout=3  # Reduced from 30 to 5 seconds
+                        timeout=4  # Reduced from 30 to 5 seconds
                     )
                 )
                 loop.close()
@@ -178,19 +178,57 @@ class ActionLayer:
         func_name = tool_call.name
         arguments = tool_call.args
         
+        # Find the matching tool
+        tool = next((t for t in self.tools if t.name == func_name), None)
+        if not tool:
+            return ToolResult(
+                success=False,
+                content="",
+                error=f"Tool not found: {func_name}"
+            )
+        
         try:
-            # Find the tool
-            tool = next((t for t in self.tools if t.name == func_name), None)
-            if not tool:
-                console.print(f"[bold red]Unknown tool: {func_name}[/]")
-                return ToolResult(
-                    success=False,
-                    content="",
-                    error=f"Unknown tool: {func_name}"
-                )
+            # Define valid drawing boundaries
+            MIN_X = 20
+            MAX_X = 1830
+            MIN_Y = 160
+            MAX_Y = 960
             
-            console.print(f"[cyan]Calling tool [bold]{func_name}[/] with args: {arguments}[/]")
-            
+            # For drawing tools, enforce both coordinate uniqueness and canvas boundaries
+            drawing_tools = ["draw_rectangle", "draw_oval", "draw_up_arrow", 
+                             "draw_down_arrow", "draw_left_arrow", "draw_right_arrow",
+                             "draw_2D_rectangle", "draw_2D_oval", "draw_2D_up_arrow_shape",
+                             "draw_2D_right_arrow_shape", "draw_2D_down_arrow_shape", 
+                             "draw_2D_left_arrow_shape"]
+                             
+            if func_name in drawing_tools:
+                # 1. First ensure coordinates are unique
+                if "x1" in arguments and "x2" in arguments and arguments["x1"] == arguments["x2"]:
+                    console.print(f"[yellow]Warning: x1 equals x2 in {func_name}. Auto-adjusting x2.[/]")
+                    arguments["x2"] = int(arguments["x2"]) + 5  # Add offset
+                    
+                if "y1" in arguments and "y2" in arguments and arguments["y1"] == arguments["y2"]:
+                    console.print(f"[yellow]Warning: y1 equals y2 in {func_name}. Auto-adjusting y2.[/]")
+                    arguments["y2"] = int(arguments["y2"]) + 5  # Add offset
+                
+                # 2. Then constrain all coordinates to the canvas boundaries
+                for coord in ['x1', 'x2', 'y1', 'y2']:
+                    if coord in arguments:
+                        original_val = arguments[coord]
+                        # Convert to int for comparison
+                        val = int(original_val)
+                        
+                        # Apply appropriate bounds based on coordinate type
+                        if coord.startswith('x'):
+                            bounded_val = max(MIN_X, min(MAX_X, val))
+                        else:  # y coordinates
+                            bounded_val = max(MIN_Y, min(MAX_Y, val))
+                        
+                        # Update if needed and log the change
+                        if bounded_val != val:
+                            console.print(f"[yellow]Adjusted {coord} from {val} to {bounded_val} to stay within canvas bounds[/]")
+                            arguments[coord] = bounded_val
+
             # Process arguments according to schema
             schema_properties = tool.inputSchema.get('properties', {})
             processed_args = {}

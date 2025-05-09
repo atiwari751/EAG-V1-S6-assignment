@@ -94,6 +94,10 @@ def main():
                 # Increment iteration counter
                 memory.increment_iteration()
                 
+                # Log the state to file
+                state_file = memory.save_state_to_file()
+                console.print(f"[dim]Agent state logged to {state_file}[/]")
+                
                 # Only print result if it's not from show_reasoning (already printed)
                 if tool_call.name != "show_reasoning":
                     console.print(f"[green]Result:[/] {processed_result.content}")

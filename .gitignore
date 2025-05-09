@@ -3,4 +3,5 @@
 __pycache__
 get_mouse_pos.py
 talk2mcp-2.py
+logs/
 

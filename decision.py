@@ -53,6 +53,12 @@ class DecisionLayer:
 You have access to these tools:
 {tools_description}
 
+IMPORTANT: When drawing shapes, you must ALWAYS use DIFFERENT values for x1 and x2, and DIFFERENT values for y1 and y2. 
+For example:
+- CORRECT: draw_rectangle(x1=100, y1=200, x2=150, y2=250)
+- INCORRECT: draw_rectangle(x1=100, y1=200, x2=100, y2=250) ← x1 and x2 are the same!
+- INCORRECT: draw_rectangle(x1=100, y1=200, x2=150, y2=200) ← y1 and y2 are the same!
+
 When you respond, you MUST produce exactly one line, and that line MUST be in one of these two and only two formats:
 
   1) Tool invocation:
@@ -72,18 +78,15 @@ When you respond, you MUST produce exactly one line, and that line MUST be in on
      ```
      – Must begin with "FINAL_ANSWER:" and provide your plain-text answer.
 
-🛑 It is ILLEGAL to ever write:
-   FUNCTION_CALL:FINAL_ANSWER|…  
-or any variant that treats FINAL_ANSWER as a tool.
+🛑 It is ILLEGAL to:
+   1) Ever write FUNCTION_CALL:FINAL_ANSWER|…  or any variant that treats FINAL_ANSWER as a tool.
 
 🧠 Very Important Behavior Rules
 - On the very first iteration, do NOT emit planning in plain text; to communicate your plan use exactly:
      FUNCTION_CALL: {{"name": "show_reasoning", "args": {{"steps": <JSON-encoded-list-of-steps>}}}}
 - There should be no step called "Finalize the image" in the initial plan.
-- For all tools that require x1, x2, y1, y2 as parameters, ensure that x1 is NEVER equal to x2 and y1 is NEVER equal to y2.
 - Do NOT use the show_reasoning tool in two consecutive iterations.
-- Only issue FINAL_ANSWER when you have completed all steps.
-        """
+- Only issue FINAL_ANSWER when you have completed all steps."""
         
         return system_prompt
     
