@@ -336,7 +336,7 @@ async def draw_down_arrow(x1: int, y1: int, x2: int, y2: int) -> dict:
         return {"content":[TextContent(type="text",text=f"Down arrow drawn from ({x1},{y1}) to ({x2},{y2})")]}
     except Exception as e:
         return {"content":[TextContent(type="text",text=f"Error drawing down arrow: {e}")]}
-
+'''
 @mcp.tool()
 async def verify_task(task: str, expected_count: Optional[int] = None) -> dict:
     """
@@ -411,7 +411,7 @@ verify_task.inputSchema = {
     },
     "required": ["task"]
 }
-
+'''
 # DEFINE RESOURCES
 
 # Add a dynamic greeting resource

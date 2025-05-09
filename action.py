@@ -113,7 +113,7 @@ class ActionLayer:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             
-            # Use wait_for with timeout to prevent hanging
+            # Use wait_for with a shorter timeout to prevent hanging
             tool_name = tool_call.name
             console.print(f"[cyan]Starting execution of tool: [bold]{tool_name}[/][/]")
             
@@ -121,14 +121,14 @@ class ActionLayer:
                 result = loop.run_until_complete(
                     asyncio.wait_for(
                         self._execute_tool_async(tool_call), 
-                        timeout=30  # 30 second timeout
+                        timeout=3  # Reduced from 30 to 5 seconds
                     )
                 )
                 loop.close()
                 console.print(f"[green]Tool [bold]{tool_name}[/] completed successfully[/]")
                 return result
             except asyncio.TimeoutError:
-                console.print(f"[bold yellow]Tool [bold]{tool_name}[/] execution timed out after 30 seconds[/]")
+                console.print(f"[bold yellow]Tool [bold]{tool_name}[/] execution timed out after 5 seconds[/]")
                 # Generic timeout handler for all tools
                 return ToolResult(
                     success=False,

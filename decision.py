@@ -79,8 +79,8 @@ or any variant that treats FINAL_ANSWER as a tool.
 🧠 Very Important Behavior Rules
 - On the very first iteration, do NOT emit planning in plain text; to communicate your plan use exactly:
      FUNCTION_CALL: {{"name": "show_reasoning", "args": {{"steps": <JSON-encoded-list-of-steps>}}}}
-- After completing a step, verify whether your action was successful using the verify_task tool. If it was, proceed to the next step. If not, repeat the same step.
 - There should be no step called "Finalize the image" in the initial plan.
+- For all tools that require x1, x2, y1, y2 as parameters, ensure that x1 is NEVER equal to x2 and y1 is NEVER equal to y2.
 - Do NOT use the show_reasoning tool in two consecutive iterations.
 - Only issue FINAL_ANSWER when you have completed all steps.
         """

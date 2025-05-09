@@ -38,7 +38,7 @@ def main():
         system_prompt = decision.create_system_prompt(tools)
         
         # Get user query
-        query = """Get creative with shapes! Open paint and draw a rectangle with corner points (272,310) and (559, 657). Then draw an oval inside the rectangle. Then draw some more ovals and arrows to make a face in the rectangle. Finally, add text "baby_AGI" in the canvas."""
+        query = """Get creative with shapes! Open paint and draw a rectangle with corner points (272,310) and (559, 657). Then draw some more ovals, rectangles, and arrows in the canvas. The final image should represent an abstract idea from Greek mythology. Add text in the canvas to describe the idea you've drawn."""
         processed_query = perception.process_user_query(query)
         
         console.print(f"[bold magenta]User Query:[/] {processed_query}")
@@ -80,6 +80,9 @@ def main():
                 # Only print result if it's not from show_reasoning (already printed)
                 if tool_call.name != "show_reasoning":
                     console.print(f"[green]Result:[/] {processed_result.content}")
+                
+                # Add a waiting message for next decision
+                console.print("[cyan]Waiting for next action decision from LLM...[/]")
                 
         console.print("[bold green]=== Agent Execution Complete ===[/]")
         
